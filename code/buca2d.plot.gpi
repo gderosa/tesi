@@ -1,0 +1,27 @@
+set multiplot
+set samples 150
+set isosamples 150
+       #set hidden3d
+       set pm3d corners2color c1
+       #set style line 100 lt 2 lw 0.5
+       #unset hidden3d
+       #set surf
+
+
+# pseudodata special file '++'
+# requires Gnuplot 4.3 or higher (currently under development, 
+# available via CVS only -- @ 2008-06-25)
+#
+# http://gnuplot.sourceforge.net/demo_4.3/heatmaps.3.png
+# http://sourceforge.net/tracker/index.php?func=detail&
+#aid=1872528&group_id=2055&atid=302055
+
+splot '++' using 1:2:(abs(psi($1,$2))**2):(arg(psi($1,$2))) w pm3d at s
+
+set isosamples 20
+#set hidden3d
+unset ztics
+set style line 2 lw 0.1
+splot abs(psi(x,y))**2 w dots lt 7
+unset multiplot
+set ztics

@@ -1,0 +1,116 @@
+%\documentclass[11pt,a4paper,titlepage,italian]{amsbook}
+\documentclass[12pt,italian,a4paper,twoside]{book}
+\usepackage[bindingoffset=0.8cm]{geometry}
+%\usepackage{crop}
+%\usepackage[binding=0.8cm]{layaureo}
+
+\usepackage{calc}
+
+\usepackage[italian,italian]{babel}
+\usepackage{url}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage[pdftex]{graphicx}
+\usepackage{subfig}
+\usepackage{listings}
+\usepackage[pdftex,colorlinks]{hyperref}
+%\usepackage{tocbibind}
+%\usepackage[figure,table]{hypcap} % Correct a problem with hyperref
+
+%\usepackage{fancyhdr}
+
+
+% http://www.maths.nottingham.ac.uk/personal/pmxdmw/thesisfile/
+%\hypersetup{
+%bookmarksnumbered,
+%   pdfstartview={FitH},
+%   citecolor={blue},
+%   linkcolor={blue},
+%   urlcolor={blue},
+%   pdfpagemode={UseOutlines}
+%}
+
+\raggedbottom	% no variable spacing between paragraph => blank at bottom page
+
+\hypersetup{
+   bookmarksnumbered,
+   pdfstartview={FitH},
+   citecolor={black},
+   linkcolor={black},
+   urlcolor={black},
+   pdfpagemode={UseOutlines}
+}
+
+\lstset{basicstyle=\scriptsize\tt}
+
+\newcommand{\vectornorm}[1]{\left|\left|#1\right|\right|}
+\newcommand{\bra}[1]{\langle#1|}
+\newcommand{\ket}[1]{|#1\rangle}
+\newcommand{\braket}[2]{\langle#1|#2\rangle}
+\newcommand{\braopket}[3]{\langle#1|#2|#3\rangle}  % "sandwich" <f|H|i>
+
+\newcommand{\prefimgwidth}{\linewidth}
+\newcommand{\prefimgheight}{(\textheight - 6em) / 2} % requires package 'calc'
+\newcommand{\includegraphicshp}[1]{\includegraphics[width=\prefimgwidth,height=\prefimgheight,keepaspectratio]{#1}} %% half page
+
+\renewcommand{\vec}[1]{\mathbf{#1}}
+
+\newenvironment{head}
+  {\begin{flushright}\footnotesize}
+  {\par\end{flushright}} 
+
+\title{Simulazione di sistemi quantistici assistita dal calcolatore}
+\author{Guido De Rosa}
+\date{}
+
+\begin{document}
+\frontmatter 
+
+%% impostaz copie consegnate alle segreterie
+\baselineskip 20pt 
+
+% \baselineskip 20pt  
+
+
+\input{front}
+\maketitle
+\cleardoublepage
+\input{dedication}
+
+\pagestyle{headings}
+
+\cleardoublepage
+\pdfbookmark[0]{\contentsname}{toc}
+\tableofcontents
+
+\cleardoublepage
+\pdfbookmark[0]{Elenco delle Figure}{lof}
+\listoffigures
+
+%%\listoftables
+
+\mainmatter
+
+\input{intro}
+\input{mq}
+\input{simula}
+\input{concl}
+
+% suppress "CHAPTER n-1" headings on \chapter*... then, restore normal headings
+\cleardoublepage \pagestyle{plain}
+\input{thanks}
+\cleardoublepage \pagestyle{headings}
+
+
+\renewcommand\bibname{Riferimenti bibliografici e telematici}
+\bibliographystyle{plain_ita}%
+\bibliography{biblio} %%% nome file(s)
+\addcontentsline{toc}{chapter}{Bibliografia e risorse in rete}
+
+\begin{appendix}
+\input{code}
+\end{appendix}
+
+
+\end{document}

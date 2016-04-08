@@ -1,0 +1,387 @@
+% included in
+%\chapter{Le simulazioni}\label{ch:simula}
+
+\section{Barriera di potenziale unidimensionale ed effetto tunnel}
+\sectionmark{Barriera di potenziale ed effetto tunnel}
+
+\subsection{Calcolo simbolico con \emph{Maxima}}
+
+\emph{Maxima}\cite{MAXIMA} è un \emph{Computer Algebra System} a sorgente 
+aperto\cite{OPENSOURCE} con il quale calcoleremo, per via esatta e
+simbolica, i parametri della \eqref{psi nelle3zone} e, per via
+approssimata e numerica, una sovrapposizione di autofunzioni per
+costruire un pacchetto d'onda e studiarne l'evoluzione temporale. 
+
+\emph{Maxima} è un programma \emph{a riga di comando}, per il quale
+sono disponibili alcuni \emph{frontend} grafici, come 
+\emph{wxMaxima}\cite{wxMAXIMA}.
+
+Di seguito illustreremo i passaggi concettualmente più importanti
+dello script utilizzato, riportato in \ref{sec:tunnel.mxm}, cominciando
+dalla parte \emph{simbolica}.
+
+Esprimiamo innanzi tutto in codice \emph{Maxima} la 
+\eqref{psi nelle3zone} e la sua derivata:
+\begin{lstlisting}
+
+/* 
+ * general solutions for potential barrier (0<E<V) 
+ */
+psi1(x) := exp(%i*x*sqrt(2*m*E)/hbar) + A2*exp(-%i*x*sqrt(2*m*E)/hbar);
+psi2(x) := C1*exp(x*sqrt((V-E)*m)/hbar) + C2*exp(-x*sqrt((V-E)*m)/hbar);
+psi3(x) := B1*exp(%i*x*sqrt(2*m*E)/hbar);
+/* 
+ * and their derivatives 
+ */
+Dpsi1(x) := diff(psi1(x),x);
+Dpsi2(x) := diff(psi2(x),x);
+Dpsi3(x) := diff(psi3(x),x);
+\end{lstlisting}
+
+Impostiamo e risolviamo il sistema \eqref{sistema_lineare_coeff}:
+\begin{lstlisting}
+
+/* 
+ * Regularity condition on wavefunction and derivative 
+ */
+reg12 : psi1(x1)=psi2(x1);
+reg23 : psi2(x2)=psi3(x2);
+Dreg12 : Dpsi1(x1)=Dpsi2(x1);
+Dreg23 : Dpsi2(x2)=Dpsi3(x2);
+/*
+ * Simbolically solve the liner equations in A2,C1,C2,B1
+ */
+linsolve([reg12,reg23,Dreg12,Dreg23],[A2,C1,C2,B1]);
+\end{lstlisting}
+
+\`E importante che \emph{Maxima} risolva il sistema simbolicamente 
+poiché le soluzioni ottenute sono funzioni di $E$ e di altri
+parametri del problema che dobbiamo ancora fissare. Ad esempio, 
+alla richiesta\footnote{ Del tutto ridondante se si esegue il codice
+di \S\ref{sec:tunnel.mxm} in modalità non interattiva, ma utile a scopo
+esplicativo o di \emph{debug}.}:
+\begin{lstlisting}
+
+tex(psi1(x));
+
+\end{lstlisting}
+si ottiene il seguente output\footnote{ Sfruttiamo la possibilità,
+per \emph{Maxima}, di produrre codice {\TeX} che ci consente,
+con piccole modifiche, di formattarne i risultati nel presente documento.}:
+
+
+{\scriptsize
+$$ %% copia/incolla da Maxima + modifiche per una migliore formattazione
+e^{{{\sqrt{2}\,i\,\sqrt{m}\,x\,\sqrt{E}}\over{{\it \hbar}}}} - 
+$$
+$$
+ \left({e ^ {- {{\sqrt{2}\,i\,\sqrt{m}\,x\,\sqrt{E}}\over{{\it \hbar}}} }\,
+ \left(\left(-V-E\right)\,e^{{{2\,\sqrt{m}\,{\it x_2}\,\sqrt{V-E}
+ }\over{{\it \hbar}}}+{{2\,\sqrt{2}\,i\,\sqrt{m}\,{\it x_1}\,\sqrt{E}
+ }\over{{\it \hbar}}}}+\left(V+E\right)\,e^{{{2\,\sqrt{m}\,{\it x_1}\,
+ \sqrt{V-E}}\over{{\it \hbar}}}+{{2\,\sqrt{2}\,i\,\sqrt{m}\,{\it x_1}
+ \,\sqrt{E}}\over{{\it \hbar}}}}\right)}\right) /
+$$
+$$
+ \left({\left(2\,\sqrt{2}\,i\,
+ \sqrt{E}\,\sqrt{V-E}-V+3\,E\right)\,e^{{{2\,\sqrt{m}\,{\it x_2}\,
+ \sqrt{V-E}}\over{{\it \hbar}}}}+\left(2\,\sqrt{2}\,i\,\sqrt{E}\,
+ \sqrt{V-E}+V-3\,E\right)\,e^{{{2\,\sqrt{m}\,{\it x_1}\,\sqrt{V-E}
+ }\over{{\it \hbar}}}}}\right) .
+$$
+}
+
+Come si vede, questa è una espressione complicata,
+generale e non semplificata, che possiamo considerare come un
+elemento intermedio e interno alla elaborazione complessiva.
+
+Con ovvio significato dei simboli possiamo ora scrivere
+\[
+\psi_E(x) = \begin{cases}
+	e^{ik_{E}x} + A_2(E) e^{-ik_{E}x}	&\text{ per } x<x_1\\
+	B_1(E) e^{\chi_{E}x} + B_2(E) e^{-\chi_{E}x} &\text{ per } x\in(x_1, x_2)\\
+	C_1(E) e^{ik_{E}x}			&\text{ per } x>x_2
+\end{cases},
+\]
+per considerare l'evoluzione temporale di ciascuna autofunzione,
+\[
+\Psi_E(x;t) = \psi_E(x) e^{-\frac{iEt}{\hbar}} ,
+\]
+in termini di codice \emph{Maxima}:
+\begin{lstlisting}
+
+/* time evolution of each eigenfunction */
+Epsi1(x,E,t) := psi1(x)*exp(-%i*E*t/hbar);
+Epsi2(x,E,t) := psi2(x)*exp(-%i*E*t/hbar);
+Epsi3(x,E,t) := psi3(x)*exp(-%i*E*t/hbar);
+\end{lstlisting}
+
+\subsection{Calcolo numerico con \emph{Maxima}}\label{sec:numerica}
+
+A questo punto, completata la parte simbolica della  
+elaborazione, possiamo fissare i parametri del problema. Una scelta
+opportuna può rendere più o meno evidenti taluni effetti fisici
+nel risultato  finale.
+\begin{lstlisting}
+
+m       : 2;
+hbar    : 0.1;
+V       : 1;
+x1      : 5.0;
+x2      : 5.1;
+\end{lstlisting}
+
+Vogliamo ora costruire un pacchetto d'onda localizzato,
+sovrapponendo autofunzioni relative a un intervallo di energie
+strettamente incluso in $(0,V)$: 
+\begin{equation}
+\Psi(x;t) = \int_{E_0-\Delta E}^{E_0+\Delta E} f(E) \Psi_E(x;t)\,dE 
+\label{eq:superposition}
+\end{equation}
+dove, per la nostra simulazione si è scelto:
+\begin{lstlisting}
+
+E0      : 0.5;
+sigmaE  : 0.1;
+deltaE  : 1.5 * sigmaE;
+/* 
+ * Make a superposition of eigenfunctions modulated by f(E). 
+ * A gaussian is a good choice to obtain a well localized packet.
+ */
+f(E) := exp(-(E-E0)^2/sigmaE^2);
+\end{lstlisting}
+
+Non resta che valutare numericamente la \eqref{eq:superposition}
+in un reticolo discreto di valori per $x$, $t$, e con un opportuno passo.
+\begin{lstlisting}
+
+/* boundaries for plotting ... */
+x0                : -2;
+x3                : 10;
+xstep             : 0.0141;
+... 
+ti                : 1.30;
+tf                : 14.8;
+tstep             : 0.03750;
+Emin              : E0 - deltaE;
+Emax              : E0 + deltaE;
+...
+
+\end{lstlisting}
+Il seguente frammento si riferisce all'integrazione numerica
+nel tratto $x<x_1$ (codice analogo è eseguito per le altre due
+regioni):
+\begin{lstlisting}
+
+...
+  /* The superposition (wavepacket) is constructed  */
+  for x: x0 step xstep thru x1 do (
+    result_re : quad_qags(  /*numerically integrate real... */
+      realpart(f(E)*Epsi1(x,E,t)),
+      E,
+      Emin,
+      Emax,
+      epsrel,
+      limitq
+    ),
+    result_im : quad_qags( /*...and imaginary part*/
+      imagpart(f(E)*Epsi1(x,E,t)),
+      E,
+      Emin,
+      Emax,
+      epsrel,
+      limitq
+    ), 
+    print(x, "= x < x1; t =", t, " results:", result_re, result_im),
+    printf(stream,format,t,x,result_re[1],result_im[1])
+  ),
+...
+\end{lstlisting}
+
+Abbiamo omesso alcuni dettagli tecnici per i quali si rimanda
+al codice completo in \S\ref{sec:tunnel.mxm} oltre che,
+naturalmente, alla documentazione di \emph{Maxima}\cite{MAXIMA}. 
+
+I risultati del calcolo sono scritti nella forma 
+\begin{align*}
+t	&& x 	&& \Re(\Psi(x;t)) 	&& \Im(\Psi(x;t)) 
+\end{align*}
+in un file
+di testo che possa esser letto da \emph{Gnuplot}\cite{GNUPLOT},
+per poi realizzare immagini e animazioni.
+\begin{lstlisting}
+
+...
+stream: openw(output_file);
+format: "~f ~f ~f ~f~%"; /* float */
+...
+  /* The superposition (wavepacket) is constructed  */
+  for x: x0 step xstep thru x1 do (
+...
+    printf(stream,format,t,x,result_re[1],result_im[1])
+...
+\end{lstlisting}
+
+
+\subsection{Rappresentazione grafica \label{sec:tunnel-graph}}
+Lo script \emph{Perl} riportato in \S\ref{sec:tunnel-plot.pl} 
+integra diverse componenti software,
+realizza una sequenza di grafici con \emph{Gnuplot}\cite{GNUPLOT} 
+e ne ricava file di animazioni mediante diversi codificatori video.
+\`E stato sviluppato in ambiente Unix, ma con qualche accorgimento
+è possibile il \emph{porting} verso altri sistemi operativi.
+
+Per conoscerne la sintassi, eseguiamolo senza argomenti:
+\begin{lstlisting}
+
+$ ./tunnel-plot.pl
+Usage: ./tunnel-plot.pl {file.dat} [ size-X size-Y ]
+
+\end{lstlisting}
+Bisogna fornire dunque il file di dati prodotto da \emph{Maxima}
+ed eventualmente le dimensioni desiderate per i grafici di funzione. 
+I parametri scelti in \S\ref{sec:numerica} possono portare
+a una esecuzione che può durare diverse ore, ma ci consentono di avere
+dati sufficienti a produrre immagini ad una definizione
+paragonabile alla massima disponibile sullo schermo di un moderno
+personal computer.
+
+Per prima cosa, lo script suddivide il file in ingresso in parti
+più piccole, ognuna delle quali contiene dati che si riferiscono
+ad uno stesso istante di tempo: in pratica, ciascuna di esse servirà
+a produrre un singolo ``fotogramma''.
+\begin{lstlisting}
+
+...
+open(FH,"<$infile");
+#
+while(<FH>) {
+    chomp;
+    if (m/^\s*(\d*\.\d+)/) {
+        $line = $_;
+        $t = $1;
+        $n = sprintf("%07.4f",$t);
+        $file = "$datadir/$n$ext";
+        unless ($handles{"$n"}) {
+            message("splitting: $n$ext ...  \r");
+            open($handles{"$n"},">$file") or die ("Couldn't open $file: $!\n");
+        }
+        $fh = $handles{"$n"};
+        print $fh "$line\n";
+    }
+}
+...
+\end{lstlisting}
+
+Successivamente viene invocata l'esecuzione di 
+\emph{Gnuplot}\cite{GNUPLOT} per produrre i grafici tridimensionali:
+\begin{lstlisting}
+
+...
+foreach $n (sort(keys(%handles))) {
+    $fh = $handles{$n};
+    close($fh);
+    message("plotting: $n.png ...   \r");
+    print GNUPLOT "set output \"$imgdir/$n.png\"\n";
+    print GNUPLOT "splot \"$datadir/$n$ext\" using 2:3:4 w lines, ".
+    " \"$datadir/$n$ext\" using 2:(0):($smscale*(\$3**2 + \$4**2)) w lines,".
+    " $x1, u, v w lines, $x2, u, v w lines\n";
+}
+...
+
+\end{lstlisting}
+nei quali l'asse $x$ è riferito alla variabile indipendente, mentre
+gli assi $y$ e $z$ rappresentano rispettivamente, per ogni istante $t$,
+la parte reale e immaginaria di $\Psi(x;t)$. 
+
+Alcuni esemp\^i sono riportati nelle Figure 
+\ref{fig:tunnel_first}-\ref{fig:tunnel_last} dove, per raffronto,
+è riportata anche la usuale rappresentazione del modulo quadro (nel
+piano $xz$, in verde). In Fig. \ref{fig:tunnel_first}
+è mostrato l'avvicinamento della particella alla barriera, con evidente
+analogia al caso classico. In Fig. \ref{fig:impact} si vede come la 
+forma d'onda sia alterata dall'impatto con la stessa. 
+Nelle Figure \ref{fig:tunnel_effect} e \ref{fig:tunnel_last} 
+è mostrato l'\emph{effetto tunnel}. In un analogo sistema classico 
+la particella tornerebbe indietro, mentre in questo sistema quantistico
+la funzione d'onda sembra ``dividersi in due''. 
+Dal punto di vista statistico ciò significa che esiste una probabilità 
+non nulla di trovare la particella oltre la barriera.
+
+\begin{figure}\begin{center}
+  \subfloat[]{
+    \includegraphicshp{img/tunnel/01_0750.png}
+  } \\
+  \subfloat[]{
+    \includegraphicshp{img/tunnel/04_6375.png}
+  } 
+  \caption{La particella si dirige verso la barriera.}
+  \label{fig:tunnel_first}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+  %\ContinuedFloat%
+  \subfloat[]{
+    \includegraphicshp{img/tunnel/05_5000.png}
+  } \\
+  \subfloat[]{
+    \includegraphicshp{img/tunnel/06_1750.png}
+  }
+  \caption{Impatto con la barriera.}\label{fig:impact}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+  %\ContinuedFloat%
+  \subfloat[]{
+    \includegraphicshp{img/tunnel/07_0750.png}
+  } \\
+  \subfloat[]{
+    \includegraphicshp{img/tunnel/07_9000.png}
+  }
+  \caption{Effetto tunnel.}\label{fig:tunnel_effect}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+  %\ContinuedFloat%
+  \subfloat[]{
+    \includegraphicshp{img/tunnel/09_1375.png}
+  } \\
+  \subfloat[]{
+    \includegraphicshp{img/tunnel/10_6000.png}
+  }
+  \caption{Vi è una probabilità che la particella ``sia passata attraverso''.}
+  \label{fig:tunnel_last}
+\end{center}\end{figure}              
+
+Con i parametri scelti disponiamo di 369 immagini che, alla frequenza
+tipica di venticinque \textit{frames} al secondo, ci consentono di
+produrre una animazione della durata di $14.76$ secondi.
+\begin{lstlisting}
+
+...
+    system("$mencoder $uri -o $lossless -ovc lavc -lavcopts vcodec=ffv1");
+...
+# codice per la conversione ad altri formati...
+...
+\end{lstlisting}
+
+Nello script in \S\ref{sec:tunnel.mxm} è presente una sezione con
+i seguenti altri parametri, \emph{commentati}:
+\begin{lstlisting}
+
+/*
+x0                : 3.0;
+x3                : 6.5;
+ti                : 5;
+tf                : 12;
+tstep             : 0.007;
+...
+*/
+
+\end{lstlisting}
+che ci consentirebbero, se sostituiti ai parametri cui ci siamo riferiti
+sinora, di ottenere una animazione molto più dettagliata, nel tempo,
+di quanto accade in prossimità della barriera.
+
+Tutte le animazioni, i grafici, i file di dati, il codice 
+\emph{Perl} e \emph{Maxima} sono disponibili alla
+pagina web \url{http://people.na.infn.it/~pq-qp/pages/simulations.html},
+parte del \emph{portale} didattico ``$PQ-QP$''\cite{PQ-QP}.
+

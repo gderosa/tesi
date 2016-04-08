@@ -1,0 +1,118 @@
+
+\chapter*{Introduzione} \label{introduzione}
+\addcontentsline{toc}{chapter}{Introduzione}
+\chaptermark{Introduzione}
+
+
+La Meccanica Quantistica ha avuto una gran mole di successi
+sperimentali ed è, con i suoi sviluppi, l'unica teoria
+in grado di descrivere i fenomeni legati alla natura intima
+della materia. \`E però fondata su un 
+formalismo matematico sofisticato e in genere piuttosto lontano
+dall'intuizione. Esistono diversi modi, più o meno generali,
+di formulare i concetti fondamentali della teoria; il più noto
+è certamente basato sulla descrizione di Schr\"odinger e sulla
+rappresentazione nello spazio delle posizioni, ovvero
+sull'intuizione di L. V. De Broglie circa la duplice natura,
+corpuscolare e ondulatoria, delle particelle materiali. 
+
+La maggior parte delle simulazioni al calcolatore, a scopo didattico
+o di ricerca, si basa sulla \emph{Meccanica Ondulatoria}, proprio
+perché è la via più efficace per fornire una visione immediata 
+di come la teoria ``funzioni'' e sia in grado di prevedere
+i fenomeni naturali. Il significato della \emph{funzione d'onda}
+come probabilità di trovare una particella in una regione dello spazio
+ci motiva a investigare, per via simulata oltre che sperimentale,
+le eventuali analogie o le profonde differenze fra un \emph{pacchetto}
+d'onda localizzato in una regione finita ed una particella classica 
+--- pensiamo agli stati coerenti di un oscillatore armonico piuttosto che
+all'effetto tunnel. Per non dire delle domande che ci possiamo
+porre quando confrontiamo le \emph{onde di materia} con altri oggetti
+di natura classicamente ondulatoria come 
+la radiazione elettromagnetica --- si pensi alla diffrazione di un fascio di 
+elettroni da parte di un reticolo cristallino piuttosto che alle relazioni
+di dispersione non lineari col conseguente \emph{slargamento} del 
+pacchetto associato ad una particella libera.
+
+In questo lavoro di tesi è descritto lo studio effettuato per
+simulare l'evoluzione temporale di due particolari
+sistemi: una particella in una dimensione in
+presenza di una barriera di potenziale ed una buca bidimensionale
+a pareti infinite. Considerare sistemi ad una o due dimensioni è utile 
+non solo perché il calcolo è più semplice
+e ci si può concentrare sui concetti fondamentali, ma anche perché,
+di fatto, molti sistemi naturali o riproducibili in laboratorio 
+hanno caratteristiche tali da poter
+essere studiati senza il reale bisogno di considerare tutte
+le dimensioni dello spazio fisico. Sistemi siffatti rendono 
+più agevole la rappresentazione grafica delle funzioni che li
+descrivono e dunque le simulazioni che realizzeremo.
+
+\`E tipico rappresentare una funzione d'onda in una dimensione
+mediante il grafico del quadrato del modulo, ma in questo modo
+si perde una parte importante dell'informazione sul sistema. 
+Se è vero che una funzione d'onda normalizzata è significativa a 
+meno di un fattore di fase \emph{costante}, è anche
+vero che, per esempio, $\psi(x)$ ed $e^{i\alpha x}\psi(x)$
+descrivono particelle aventi la stessa distribuzione di probabilità 
+per la posizione ma una
+%(ben) 
+diversa distribuzione del momento lineare! (In termini
+matematici, basti applicare la proprietà di traslazione della
+trasformata di Fourier). Per questi motivi si è scelto di rappresentare 
+l'evoluzione nel tempo 
+della funzione \emph{complessa}. Per un sistema unidimensionale
+si possono utilizzare grafici a tre dimensioni, uno dei cui assi sarà
+associato alla variabile indipendente mentre gli altri due corrisponderanno
+alla parte reale e alla parte immaginaria della funzione. In questo
+modo il grafico di $e^{ikx}$ avrebbe la forma di un'elica, ma si possono 
+fare numerosi altri esemp\^{i}. 
+
+Nella prima simulazione è stato considerato un pacchetto d'onda con una 
+energia (o meglio con una
+distribuzione statistica di valori dell'energia) strettamente inferiore
+al livello della barriera: in un analogo sistema classico l'attraversamento
+di quest'ultima è impossibile. La soluzione delle equazioni quantistiche
+mostra invece che esiste una probabilità di trovare la particella
+\emph{oltre} la barriera. Fra i successi della meccanica quantistica
+possiamo annoverare l'interpretazione del decadimento $\alpha$ 
+proprio in termini di questo \emph{effetto tunnel}. Nella
+nostra schematizzazione i parametri del sistema sono stati scelti
+in modo tale da rendere un simile effetto piuttosto evidente.
+
+La seconda simulazione riguarda un sistema bidimensionale. %
+%Sull'asse
+%$z$ rappresenteremo nel modo usuale $|\psi(x,y)|^2$, e useremo
+%come quarta dimensione del grafico una scala di colori a rappresentare
+%tutta e sola l'informazione che manca: l'argomento complesso. 
+Una volta usati gli assi $x$ e $y$ per le variabili indipendenti,
+sull'asse $z$ può essere rappresentato, nel modo usuale, $|\psi(x,y)|^2$,
+mentre l'argomento complesso può essere reso da una scala di colori.
+Si è combinato linearmente un numero finito e piccolo di autostati 
+dell'energia, ma per 
+il resto sono state scelte combinazioni del tutto arbitrarie. Solo in alcuni
+casi si è ottenuto un comportamento che potremmo definire
+semiclassico, e in tali casi si è potuto vedere che, cambiando solo 
+l'argomento complesso di uno dei coefficienti (lasciando
+inalterata, dunque, la distribuzione statistica dell'energia), si 
+hanno ``traiettorie'' del tutto diverse. 
+
+Prima di illustrare, nel Cap. \ref{ch:simula}, le simulazioni e 
+la loro implementazione, dedicheremo il Cap. \ref{ch:mq}
+a un breve richiamo dei postulati fondamentali della meccanica
+quantistica, facendo riferimento ad alcuni concetti di teoria spettrale. 
+Seguiranno considerazioni relative
+alla rappresentazione nello spazio delle configurazioni che ci 
+consentiranno di esprimere, nel linguaggio della meccanica
+ondulatoria, l'equazione agli autovalori dell'hamiltoniana e 
+l'evoluzione temporale delle autofunzioni, ovvero gli strumenti 
+indispensabili per impostare il seguito di questo lavoro.
+%\pagestyle{headings}
+\vspace{5pt} \\  %% dirty....
+\textbf{
+	Tutte le animazioni, i grafici, i file di dati e il codice
+	sorgente sono disponibili alla
+	pagina web \url{http://people.na.infn.it/~pq-qp/pages/simulations.html},
+	parte del \emph{portale} didattico ``$PQ-QP$''\cite{PQ-QP}.
+}
+

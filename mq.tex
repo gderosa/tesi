@@ -1,0 +1,357 @@
+\chapter{I sistemi quantistici} \label{ch:mq}
+
+\section{Il teorema di risoluzione spettrale e la formulazione
+generale della Meccanica Quantistica}\sectionmark{Formulazione 
+generale della M. Q.}
+
+\subsection{Teorema di risoluzione spettrale}
+
+Ogni operatore autoaggiunto 
+\`{e} esprimibile nella forma\cite{VON_NEUMANN, CALDIROLA_SPETTRALE}
+\begin{equation}
+        \hat{A}=\int_{-\infty}^{\infty}a\, d\hat{E}(a),
+                \label{eq:risoluz_spettrale}
+\end{equation}
+ dove $\hat{E}$ indica una misura a valori di proiezione definita
+sui boreliani $B$ dell'asse reale, che soddisfa le condizioni
+\begin{align*}
+\hat{E}(\mathbb{R}) & =\mathbf{1},\\
+        \hat{E}(B_{1}\cap B_{2}) & =\hat{E}(B_{1})\hat{E}(B_{2})\,.
+\end{align*}
+
+\subsection{I postulati della Meccanica Quantistica}
+
+Nella \emph{descrizione\footnote{
+  \`E opportuno distinguere \emph{descrizione} da \emph{rappresentazione}:
+  il formalismo da cui prende le mosse il presente lavoro prescinde,
+  come vedremo, dalla particolare \emph{rappresentazione}.
+}di Schr\"odinger} le proprietà quantistiche
+di una particella possono ricavarsi dai seguenti 
+postulati\cite{CALDIROLA_GEN}:
+
+\begin{enumerate}
+  \renewcommand{\theenumi}{\roman{enumi}}
+  \item{%
+    Ad ogni sistema fisico è associato un opportuno spazio di Hilbert,
+    $\mathcal{H}$. Ogni stato del sistema può essere rappresentato
+    mediante un elemento $\psi$ di $\mathcal{H}$ con norma uguale a $1$,
+    detto \emph{vettore di stato}, che contiene tutte le possibili 
+    informazioni sul sistema.
+
+    L'evoluzione temporale di detto vettore è regolata da una equazione
+    della forma
+    \begin{equation}
+      i\hbar\frac{d\psi}{dt} = \hat{H}\psi  \label{eq:schrod}
+    \end{equation}
+    dove $\hat{H}$ è un opportuno operatore autoaggiunto detto
+    \emph{operatore di Hamilton} o \emph{hamiltoniana} del sistema e
+    l'equazione prende il nome di \emph{equazione di Schr\"odinger}.
+  }
+  \item{
+    Ad ogni grandezza osservabile $A$ corrisponde un operatore
+    autoaggiunto $\hat{A}$ nello spazio $\mathcal{H}$, il cui
+    spettro discreto $\sigma_d$ e continuo $\sigma_c$ costituiscono
+    l'insieme dei possibili risultati di una misura di $A$.
+
+    La probabilità che una misura fornisca un risultato nell'insieme
+    $\mathcal{A}$ è data da
+    \begin{equation}
+      P_{\mathcal{A}} = \int_{\mathcal{A}} \vectornorm{d\hat{E}(a) \psi}^2,
+      \label{eq:probab}
+    \end{equation}
+    dove $\hat{E}$ è la misura a valori di proiezione associata
+    ad $\hat{A}$ mediante la \eqref{eq:risoluz_spettrale}.
+  }
+  \item{
+    Se da una misura risulta che il valore della grandezza $A$ 
+    appartiene all'insieme $\mathcal{A}$, e con i simboli
+    $\psi_i$ e $\psi_f$ si indicano rispettivamente il vettore di stato
+    prima e dopo l'osservazione, si ha, a meno di normalizzazioni,
+    \[
+      \psi_f = \hat{E}(\mathcal{A}) \psi_i .
+    \]
+
+    In altre parole, \emph{la misura agisce sullo spazio degli stati come
+    un \emph{proiettore} sull'autospazio 
+    relativo ai risultati ottenuti}.
+  }
+  \item{
+    Ad una particella nello spazio fisico tridimensionale sono associati
+    gli operatori
+    \begin{align}
+      \vec{\hat{r}} &=  (\hat{x},   \hat{y},    \hat{z}), 
+        \label{eq:op_posizione} \\
+      \vec{\hat{p}} &=  (\hat{p}_x, \hat{p}_y,  \hat{p}_z),
+        \label{eq:op_momento}
+    \end{align}
+    che formano in $\mathcal{H}$ un insieme irriducibile\footnote{
+      Cioè non esiste alcun sottospazio proprio di $\mathcal{H}$ 
+      invariante sia per $\mathbf{\hat{r}}$ che per $\mathbf{\hat{p}}$.
+    }, soddisfano le regole di commutazione
+    \begin{align}
+      [\hat{r}_i, \hat{r}_j] &= [\hat{p}_i, \hat{p}_j] = 0, 
+      	\label{eq:commutaz_qq_pp} \\
+      [\hat{r}_i, \hat{p}_j] &= i\hbar \, \delta_{ij}, 
+      	\label{eq:commutaz_qp}
+    \end{align}
+    e corrispondono alle coordinate cartesiane e ai loro momenti coniugati.
+  }
+  \item{
+    Gli operatori corrispondenti alle altre osservabili\footnote{
+      Stiamo considerando grandezze che hanno un analogo classico. 
+      Lo \emph{spin}, ad esempio, è un'altra osservabile fondamentale,
+      considerare la quale richiederebbe qualche ulteriore precisazione.
+    }    
+    sono \emph{funzioni} degli operatori fondamentali
+    \eqref{eq:op_posizione} e \eqref{eq:op_momento}.
+  }
+  \item{
+    L'operatore $\hat{H}$ che compare nella \eqref{eq:schrod} è
+    della forma\footnote{
+      In presenza di campo magnetico, per una particella di
+      carica $e$ (senza spin) la \eqref{eq:hamiltoniana} diventa
+      \[
+        \hat{H} = \frac {(\vec{\hat{p}}-e\vec{\hat{A}})^2} {2m} 
+        + eV(\vec{\hat{r}}) + U(\vec{\hat{r}})
+      \]
+    dove $\vec{\hat{A}}$ corrisponde al \emph{potenziale vettore} del campo
+    elettromagnetico, $V$ al potenziale scalare, e si è posto $c=1$.
+    }
+    \begin{equation}
+      \hat{H} = \frac{\vec{\hat{p}}^2}{2m} + U(  \vec{\hat{r}}    ) . 
+      \label{eq:hamiltoniana}
+    \end{equation}
+  }
+\end{enumerate}
+
+I postulati suddetti si riferiscono a sistemi ad una particella
+ma sono facilmente generalizzabili al caso di $N$ particelle. In particolare
+la \eqref{eq:hamiltoniana} diventa 
+$ \hat{H} = \frac{1}{2m} \sum_{k=1}^{N} \vec{\hat{p}_{k}}^2  + 
+U(  \vec{\hat{r}_{1},\dots,\hat{r}_{N}}    ) $, mentre le relazioni
+di commutazione \eqref{eq:commutaz_qq_pp} e \eqref{eq:commutaz_qp} 
+diventano 
+$[\hat{r}_i^{(k)}, \hat{r}_j^{(l)}] = [\hat{p}_i^{(k)}, \hat{p}_j^{(l)}] = 0\,$
+ e
+$\,[\hat{r}_i^{(k)}, \hat{p}_j^{(l)}] = i\hbar \, \delta_{ij}\delta_{kl}$.
+Nel seguito, tuttavia, faremo sempre riferimento per semplicità a sistemi 
+costituiti da una singola particella. 
+
+\section{La rappresentazione nello spazio delle posizioni}
+
+Come spazio degli stati possiamo scegliere 
+$\mathcal{L}^2(\mathbb{R}^3)$ e come operatori fondamentali gli operatori
+di moltiplicazione $(x, y, z)$ e gli operatori differenziali
+$\frac{\hbar}{i}(\partial_x, \partial_y, \partial_z)$ a rappresentare
+rispettivamente posizione e momento lineare. \`E immediato
+verificare che le relazioni di commutazione \eqref{eq:commutaz_qq_pp} 
+e \eqref{eq:commutaz_qp}
+sono soddisfatte.
+
+In questa rappresentazione, la \eqref{eq:schrod} si esprime:
+\begin{equation}
+  i\hbar\frac{\partial\Psi(x, y, z; t)}{\partial t} = 
+  \left[-\frac{\hbar^2}{2m}\nabla^2 + U(x,y,z)\right]\Psi(x,y,z;t) ,
+  \label{eq:schrod-q}
+\end{equation}
+mentre la \eqref{eq:probab}, riferita agli operatori di
+posizione, si scrive:
+\[
+  P_X(t) = \int_X |\Psi(x,y,z; t)|^2\,dxdydz
+\]
+mostrando che $|\Psi(x,y,z;t)|^2$ ha il notevole significato di 
+\emph{densità di probabilità} di trovare la particella in una
+data posizione al tempo $t$. 
+
+\section{Evoluzione temporale}
+
+Se $\Psi$ è un'autofunzione dell'\emph{hamiltoniana}
+\[
+  H = -\frac{\hbar^2}{2m}\nabla^2 + U 
+\]
+relativa all'autovalore $\epsilon$, la \eqref{eq:schrod-q} diventa
+\[
+  i\hbar\frac{\partial\Psi}{\partial t} = \epsilon\Psi
+\]
+e la sua soluzione generale (noto lo stato iniziale $\Psi(t_0)$) 
+sarà del tipo
+\[
+  \Psi(t) = \Psi(t_0) e^{-\frac{i\epsilon(t-t_0)}{\hbar}}.
+\]
+
+Si può dimostrare che, come conseguenza della \eqref{eq:risoluz_spettrale}, 
+una generica funzione di $\mathcal{L}^2(\mathbb{R})$ è esprimibile
+come sovrapposizione lineare di autofunzioni dell'hamiltoniana:
+\[
+  \Psi = \sum_{n} c_n \varphi_n + 
+  \int_{\sigma_c} d\epsilon\,f(\epsilon)\varphi_{\epsilon}
+\]
+a patto di considerare anche funzioni $\varphi_{\epsilon}$ non a quadrato
+sommabile ma che, integrate mediante una opportuna funzione $f$,
+diano come risultato una funzione di $\mathcal{L}^2$ (\emph{autofunzioni
+improprie}).
+
+Per la linearità della \eqref{eq:schrod-q}, l'evoluzione temporale
+della $\Psi$ sarà
+\begin{equation}
+  \Psi(t) = \sum_{n} c_n \Psi_n(t_0) e^{-\frac{i\epsilon_n(t-t_0)}{\hbar}} + 
+  \int_{\sigma_c} d\epsilon\,f(\epsilon)\Psi_{\epsilon}(t_0)
+  e^{-\frac{i\epsilon(t-t_0)}{\hbar}}, \label{eq:evoluz_autofunzioni}
+\end{equation}
+che, definendo opportunamente l'esponenziale di un operatore hermitiano,
+si può esprimere come
+\[
+  \Psi(t) = U(t,t_0)\Psi(t_0) = e^{-\frac{i\hat{H}(t-t_0)}{\hbar}} \Psi(t_0) ,
+\]
+dove $U(t,t_0)$ è detto \emph{operatore di evoluzione temporale}, e
+l'ultima equazione vale a prescindere dalla rappresentazione.
+
+In conclusione, per conoscere l'evoluzione temporale di un sistema
+quantistico descritto dalla hamiltoniana $H$ una strada da seguire
+consiste nel risolvere l'equazione agli autovalori $H\psi=\epsilon\psi$
+(\emph{equazione di Schr\"odinger indipendente dal tempo}), 
+per poi esprimere la funzione d'onda all'istante iniziale come
+combinazione lineare di autofunzioni, la cui evoluzione è data
+dalla \eqref{eq:evoluz_autofunzioni}.
+
+\clearpage\section{Barriera di potenziale unidimensionale ed effetto tunnel}\sectionmark{Barriera di potenziale ed effetto tunnel}
+
+Nella prima simulazione consideriamo una particella in una dimensione, 
+di massa $m$, 
+soggetta al potenziale:
+\[
+U(x)=\begin{cases}
+	V,	& \text{per }x \in (x_1, x_2) \\
+	0,	& \text{altrove } 
+\end{cases}
+\]
+Lo spettro dell'energia è puramente continuo e comprende tutti i valori
+maggiori di $0$. Per un analogo sistema classico l'attraversamento della
+barriera è possibile solo per $E>V$, mentre in Meccanica Quantistica
+esiste una probabilità non nulla che ciò accada anche per $0<E<V$. Tale
+fenomeno va sotto il nome di \emph{effetto tunnel}.
+Per darne una dimostrazione dobbiamo 
+innanzi tutto individuare una schiera di autofunzioni (improprie)
+di energia $E \in\,]0, V[ $.
+
+Possiamo risolvere l'equazione di Schr\"{o}dinger indipendente dal tempo,
+\[
+\left[-\frac{\hbar^2}{2m}\frac{d^2}{dx^2} + U(x)\right]\psi(x) = E\psi(x) ,
+\]
+separatamente nelle tre regioni $x<x_1$, $x\in(x_1,x_2)$ e $x>x_2$ e
+ottenere
+\begin{equation}
+\psi_E(x) = \begin{cases}
+	A_1 e^{ik_{E}x} + A_2 e^{-ik_{E}x}	&\text{ per } x<x_1\\
+	B_1 e^{\chi_{E} x} + B_2 e^{-\chi_{E} x}&\text{ per } x\in(x_1, x_2)\\
+	C_1 e^{ik_{E}x} + C_2 e^{-ik_{E}x}      &\text{ per } x>x_2
+\end{cases},     \label{psi nelle3zone}
+\end{equation} 
+dove si è posto
+\begin{align*}
+k_{E} &= \frac{\sqrt{2mE}}{\hbar}, & \chi_{E} &= \frac{\sqrt{2m(V-E)}}{\hbar}.
+\end{align*}
+
+Resta da imporre che $\psi$ appartenga al dominio di autoaggiuntezza 
+dell'operatore hamiltoniano $-\frac{\hbar^2}{2m}\frac{d^2}{dx^2} + U$.
+Si può dimostrare che ciò equivale a richiedere la continuità della 
+funzione con la sua derivata, ovunque e, in modo particolare, nei
+punti $x_1$ e $x_2$, dove è verificata solo per alcuni valori dei 
+coefficienti $A_1$, $A_2$, $B_1$, $B_2$, $C_1$ e $C_2$.
+
+Sappiamo che una funzione d'onda moltiplicata per un arbitrario
+fattore complesso rappresenta lo stesso stato. Dunque possiamo
+scegliere liberamente il valore di uno dei coefficienti: nel nostro 
+caso imporremo $A_1~=~1$.
+
+Vogliamo costruire un pacchetto d'onda che abbia un ``analogo
+classico''. Scegliamo, nella nostra simulazione, di rappresentare
+una particella che proviene dalla sinistra della barriera. Questo
+ci porta ad imporre $C_2=0$, in quanto una sovrapposizione di funzioni
+del tipo $e^{-ikx}$ nella regione $x>x_2$ corrisponderebbe ad una 
+particella \emph{proveniente da destra} (sono tutte autofunzioni
+relative ad autovalori \emph{negativi} del momento lineare).
+
+Abbiamo così ridotto a quattro il numero delle incognite. La richiesta
+di continuità di $\psi$ e $\psi'$ in $x_1$ e $x_2$ equivale
+ad altrettante equazioni lineari:
+
+\begin{equation}\begin{aligned}
+e^{ik_{E}x_1} + A_2 e^{-ik_{E}x_1} &= B_1 e^{\chi_{E}x_1} + B_2 e^{-\chi_{E}x_1} \\
+B_1 e^{\chi_{E} x_2} + B_2 e^{-\chi_{E} x_2} &= C_1 e^{ik_{E}x_2} \\
+ik_{E} e^{ik_{E}x_1} -ik_{E} A_2 e^{-ik_{E}x_1} &=B_1\chi_{E} e^{\chi_{E} x_1}-B_2 \chi_{E} e^{-\chi_{E} x_1}\\
+B_1\chi_{E} e^{\chi_{E} x_2} -B_2 \chi_{E} e^{-\chi_{E} x_2} &= i C_1 k_{E} e^{ik_{E}x_2} .
+\end{aligned} \label{sistema_lineare_coeff}  \end{equation} 
+
+
+
+
+\clearpage\sectionmark{Buca bidimensionale}\section{Buca di potenziale bidimensionale a pareti infinite}\sectionmark{Buca bidimensionale}
+
+Per \emph{buca quadrata} s'intende in generale il sistema costituito da una
+particella in due dimensioni soggetta al potenziale
+\[
+U(x,y)=\begin{cases}
+        0,      & \text{per }(x,y) \in (-a, a)\times(-a, a) \\
+        V,      & \text{altrove }
+\end{cases}. \label{eq:potenziale_bucaquadratafinita}
+\]
+
+La funzione d'onda deve appartenere al dominio di autoaggiuntezza 
+dell'hamiltoniana. Ciò equivale alla
+richiesta di continuità della stessa e delle sue derivate spaziali.
+Si può dimostrare che, al limite per $V\rightarrow\infty$, 
+le condizioni al contorno si riducono a:
+\[
+\psi(x,y) = 0, \text{ per } (x, y) \in 
+	\mathbb{R}^2 - \left(-a,a\right)\times\left(-a,a\right)  .
+\label{eq:contorno_buca2dinf}
+\]
+In termini intuitivi, questa condizione descrive una particella costretta
+nel quadrato $(-a, a)\times(-a, a)$ da un potenziale che valga zero
+all'interno e sia ``infinito'' al di fuori di tale porzione di piano.
+
+
+Per semplicità di calcolo scegliamo unità di misura tali da soddisfare 
+la relazione $\frac{\hbar^2}{2m}=1$; si pone inoltre $a=\frac{\pi}{2}$.
+In questo modo l'operatore hamiltoniano ha la seguente espressione:
+\begin{equation*}\label{eq:H_buca}
+    H=H_{1}+H_{2}\text{,}
+      \quad\text{con}
+      \quad H_{1}=-\frac{\partial^{2}}{\partial x^{2}}
+      \quad\text{e}\quad H_{2}=-\frac{\partial^{2}}{\partial y^{2}} 
+\end{equation*}
+e le sue autofunzioni sono tutte del tipo:
+\begin{equation}
+\psi_{mn}(x,y) = \phi_m(x)\phi_n(y) , \label{eq:autofunz_buca}
+\end{equation}
+con
+\begin{equation}\phi_k(\xi)=\begin{cases}
+  \sqrt{\frac{2}{\pi}}\cos(k\xi), & \text{ per } k \text{ dispari } \\
+  \sqrt{\frac{2}{\pi}}\sin(k\xi), & \text{ per } k \text{ pari }
+\end{cases}. \label{eq:phi} \end{equation}
+
+I corrispondenti autovalori dell'energia\footnote{
+  Almeno quando $m\not=n$, si tratta chiaramente di livelli
+  degeneri: è sufficiente scambiare gli indici per avere due stati
+  $\psi_{mn}$ e $\psi_{nm}$ linearmente indipendenti ma relativi alla
+  stessa energia, il che riflette la simmetria del sistema.
+} sono dati da $E_{mn}=m^2+n^2$. 
+Infatti:
+\begin{multline*} H\psi_{mn}(x,y) = 
+\left(-\frac{\partial^2}{\partial x^2}-\frac{\partial^2}{\partial y^2}\right)
+\phi_m(x)\phi_n(y) = \\
+m^2\phi_m(x)\phi_n(y) + n^2\phi_m(x)\phi_n(y) = (m^2+n^2)\psi_{mn}(x,y).
+\end{multline*}
+
+Ciascuna delle autofunzioni ha la seguente evoluzione temporale:
+\begin{equation}
+\Psi_{mn}(x,y;t) = \psi_{mn}(x,y) e^{-iE_{mn}t} 
+= \phi_{m}(x) \phi_{n}(y) e^{-i(m^2+n^2)t} . \label{eq:evol_autofunzioni}
+\end{equation} 
+
+Per la simulazione prenderemo in considerazione alcune semplici combinazioni
+lineari (finite) di autostati dell'energia, cosa resa possibile dallo
+spettro discreto dell'operatore hamiltoniano.
+
+
